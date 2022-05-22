@@ -3,20 +3,24 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import { useState } from 'react'
 import { useEffect } from 'react';
-import Ul from '../components/Ul';
+import Table from '../components/Table';
 
 export default function Home() {
   const [codes, setCodes] = useState([]);
   const [number, setNumber] = useState(0);
   const [isRunRandom, setIsRunRandom] = useState(false);
-  const soLuongCode = 100;
+  const soLuongCode = 1000;
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // function handleClick() {
-  //   if (!isRunRandom) {
-  //     setIsRunRandom(isRunRandom => true);
-  //   }
-  // }
+  function handleClick() {
+    if (!isRunRandom) {
+      setIsRunRandom( isRunRandom => true );
+    }
+  }
+
+  function handleChange() {
+    console.log('Change')
+  }
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   // async function randomNumber() {
@@ -25,7 +29,12 @@ export default function Home() {
   //     while ( codes.includes(randomNumber) )
   //     return randomNumber
   //   }
+useEffect(() => {
+  if (codes.length > 0) {
+    setIsRunRandom(isRunRandom => true);
+  }
 
+},[codes])
 useEffect(() => {
     if (isRunRandom && codes.length < soLuongCode) {
       runRandom();
@@ -33,6 +42,7 @@ useEffect(() => {
     
     async function runRandom() {
       let code = await randomNumber();
+      setIsRunRandom(isRunRandom => false);
       setCodes(codes => [...codes, code]);
     }
     
@@ -57,7 +67,7 @@ useEffect(() => {
 
       function makeid(length) {
         var result           = '';
-        var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        var characters       = 'ABCDEFGHIJKLMNPQRSTUVWXYZ123456789';
         var charactersLength = characters.length;
         for ( var i = 0; i < length; i++ ) {
           result += characters.charAt(Math.floor(Math.random() * 
@@ -66,7 +76,7 @@ useEffect(() => {
        return result;
     }
 
-}, [codes, number, isRunRandom]) 
+}, [isRunRandom]) 
 
   return (
     <div className={styles.container}>
@@ -80,9 +90,9 @@ useEffect(() => {
         <h1 className={styles.title}>
           A An Random: <a href="https://nextjs.org">{codes.length}</a>
         </h1>
-      <button onClick={() => setIsRunRandom(isRunRandom => true)}>Start random</button>
-      <Ul className={styles.ul} codes={codes}>
-      </Ul>
+      <button onClick={handleClick}>Start random</button>
+      <Table className={styles.ul} codes={codes} onChange={handleChange}>
+      </Table>
       </main>
 </div>
   )

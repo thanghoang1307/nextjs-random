@@ -3,13 +3,16 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 import { useState } from 'react'
 import { useEffect } from 'react';
-import Ul from '../components/Ul';
+import Table from '../components/Table';
 
 export default function Home() {
-  const [codes, setCodes] = useState([]);
-  const [number, setNumber] = useState(0);
+  const [rows, setRows] = useState([]);
   const [isRunRandom, setIsRunRandom] = useState(false);
   const soLuongCode = 1000;
+  const soKyTuCode = 9
+  const giaTriCode = 'ABCDEFGHIJKLMNPQRSTUVWXYZ123456789'
+  const soKyTuSeri = 6;
+  const giaTriSeri = '0123456789'
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   function handleClick() {
@@ -30,54 +33,58 @@ export default function Home() {
   //     return randomNumber
   //   }
 useEffect(() => {
-  if (codes.length > 0) {
+  if (rows.length > 0) {
     setIsRunRandom(isRunRandom => true);
   }
 
-},[codes])
+},[rows])
+
 useEffect(() => {
-    if (isRunRandom && codes.length < soLuongCode) {
+    if (isRunRandom && rows.length < soLuongCode) {
       runRandom();
+            
     }
     
     async function runRandom() {
-      let code = await randomNumber();
+      let code = await runRandomUniqueValue(soKyTuCode, giaTriCode, 'code');
+      let seri = await runRandomUniqueValue(soKyTuSeri, giaTriSeri, 'seri');
+      let row = { code, seri };
+      setRows(rows => [...rows, row]);
       setIsRunRandom(isRunRandom => false);
-      setCodes(codes => [...codes, code]);
     }
     
-    async function randomNumber() {
+    async function runRandomUniqueValue(soKyTu, giaTri, type) {
       const result = new Promise( (resolve, reject) => {
-        let randomNumber = makeid(9);
-        while ( isIncluded(randomNumber) ) {
-          randomNumber = makeid(9);
+        let randomNumber = runRandomValue(soKyTu, giaTri);
+        while ( isIncluded(randomNumber, type) ) {
+          randomNumber = runRandomValue(soKyTu, giaTri);
         }
         resolve(randomNumber)
       })
       return result;
       }
   
-      function isIncluded(randomNummber) {
-        console.log(codes);
-        if (codes.some(item => { return item == randomNummber })) {
+      function isIncluded(randomNummber, type) {
+        if (rows.some(item => { return item[type] == randomNummber })) {
           return true
         } else {
           return false
         }
       }
 
-      function makeid(length) {
+      function runRandomValue(soKyTu, giaTri) {
         var result           = '';
-        var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        var characters       = giaTri;
         var charactersLength = characters.length;
-        for ( var i = 0; i < length; i++ ) {
+        for ( var i = 0; i < soKyTu; i++ ) {
           result += characters.charAt(Math.floor(Math.random() * 
      charactersLength));
        }
        return result;
     }
 
-}, [isRunRandom]) 
+
+}, [isRunRandom, rows]) 
 
   return (
     <div className={styles.container}>
@@ -89,11 +96,11 @@ useEffect(() => {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          A An Random: <a href="https://nextjs.org">{codes.length}</a>
+          A An Random: <a href="https://nextjs.org">{rows.length}</a>
         </h1>
       <button onClick={handleClick}>Start random</button>
-      <Ul className={styles.ul} codes={codes} onChange={handleChange}>
-      </Ul>
+      <Table className={styles.ul} rows={rows} onChange={handleChange}>
+      </Table>
       </main>
 </div>
   )
