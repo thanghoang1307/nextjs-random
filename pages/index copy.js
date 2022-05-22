@@ -9,18 +9,14 @@ export default function Home() {
   const [codes, setCodes] = useState([]);
   const [number, setNumber] = useState(0);
   const [isRunRandom, setIsRunRandom] = useState(false);
-  const soLuongCode = 1000;
+  const soLuongCode = 100;
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  function handleClick() {
-    if (!isRunRandom) {
-      setIsRunRandom( isRunRandom => true );
-    }
-  }
-
-  function handleChange() {
-    console.log('Change')
-  }
+  // function handleClick() {
+  //   if (!isRunRandom) {
+  //     setIsRunRandom(isRunRandom => true);
+  //   }
+  // }
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   // async function randomNumber() {
@@ -29,12 +25,7 @@ export default function Home() {
   //     while ( codes.includes(randomNumber) )
   //     return randomNumber
   //   }
-useEffect(() => {
-  if (codes.length > 0) {
-    setIsRunRandom(isRunRandom => true);
-  }
 
-},[codes])
 useEffect(() => {
     if (isRunRandom && codes.length < soLuongCode) {
       runRandom();
@@ -42,7 +33,6 @@ useEffect(() => {
     
     async function runRandom() {
       let code = await randomNumber();
-      setIsRunRandom(isRunRandom => false);
       setCodes(codes => [...codes, code]);
     }
     
@@ -58,7 +48,6 @@ useEffect(() => {
       }
   
       function isIncluded(randomNummber) {
-        console.log(codes);
         if (codes.some(item => { return item == randomNummber })) {
           return true
         } else {
@@ -77,7 +66,7 @@ useEffect(() => {
        return result;
     }
 
-}, [isRunRandom]) 
+}, [codes, number, isRunRandom]) 
 
   return (
     <div className={styles.container}>
@@ -91,8 +80,8 @@ useEffect(() => {
         <h1 className={styles.title}>
           A An Random: <a href="https://nextjs.org">{codes.length}</a>
         </h1>
-      <button onClick={handleClick}>Start random</button>
-      <Ul className={styles.ul} codes={codes} onChange={handleChange}>
+      <button onClick={() => setIsRunRandom(isRunRandom => true)}>Start random</button>
+      <Ul className={styles.ul} codes={codes}>
       </Ul>
       </main>
 </div>
