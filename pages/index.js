@@ -4,8 +4,10 @@ import styles from '../styles/Home.module.css'
 import { useState } from 'react'
 import { useEffect } from 'react';
 import Table from '../components/Table';
+import RandomCode from '../RandomCode';
 
 export default function Home() {
+  const prevCode = RandomCode();
   const [rows, setRows] = useState([]);
   const [isRunRandom, setIsRunRandom] = useState(false);
   const soLuongCode = 676000;
@@ -25,24 +27,20 @@ export default function Home() {
     console.log('Change')
   }
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  // async function randomNumber() {
-  //   let randomNumber;
-  //     do { randomNumber = Math.floor(Math.random()*676000) }
-  //     while ( codes.includes(randomNumber) )
-  //     return randomNumber
-  //   }
+  useEffect(() => {
+    setRows(rows => [...prevCode]);
+  }, []);
+
 useEffect(() => {
   if (rows.length > 0) {
     setIsRunRandom(isRunRandom => true);
   }
-
+  
 },[rows])
 
 useEffect(() => {
     if (isRunRandom && rows.length < soLuongCode) {
       runRandom();
-            
     }
     
     async function runRandom() {
@@ -103,7 +101,5 @@ useEffect(() => {
       </Table>
       </main>
 </div>
-  )
-
-  
+  )  
 }
