@@ -8,7 +8,7 @@ import Table from '../components/Table';
 export default function Home() {
   const [rows, setRows] = useState([]);
   const [isRunRandom, setIsRunRandom] = useState(false);
-  const soLuongCode = 1000;
+  const soLuongCode = 676000;
   const soKyTuCode = 9
   const giaTriCode = 'ABCDEFGHIJKLMNPQRSTUVWXYZ123456789'
   const soKyTuSeri = 6;
