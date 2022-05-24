@@ -16,7 +16,6 @@ export default function Home() {
   const soKyTuSeri = 6;
   const giaTriSeri = '0123456789'
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   function handleClick() {
     if (!isRunRandom) {
       setIsRunRandom( isRunRandom => true );
