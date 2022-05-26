@@ -28,7 +28,7 @@ export default function Home() {
 
   useEffect(() => {
     setRows(rows => [...prevCode]);
-    console.log(rows)
+    console.log(prevCode.length)
   }, []);
 
 useEffect(() => {
