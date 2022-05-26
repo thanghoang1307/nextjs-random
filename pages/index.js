@@ -4,10 +4,11 @@ import { useState } from 'react'
 import { useEffect } from 'react';
 import Table from '../components/Table';
 import RandomCode from '../RandomCode';
+import { isIncluded, runRandomValue } from '../lib/random'
 
-export default function Home() {
-  const prevCode = RandomCode();
-  const [rows, setRows] = useState([]);
+export default function Home({ prevCode }) {
+  
+  const [rows, setRows] = useState([prevCode]);
   const [isRunRandom, setIsRunRandom] = useState(false);
   const soLuongCode = 676000;
   const soKyTuCode = 9
@@ -27,14 +28,12 @@ export default function Home() {
 
   useEffect(() => {
     setRows(rows => [...prevCode]);
-    console.log(prevCode.length)
   }, []);
 
 useEffect(() => {
   if (rows.length > 0) {
     setIsRunRandom(isRunRandom => true);
   }
-  
 },[rows])
 
 useEffect(() => {
@@ -48,38 +47,43 @@ useEffect(() => {
       let row = { code, seri };
       setRows(rows => [...rows, row]);
       setIsRunRandom(isRunRandom => false);
+      updateCode(row);
     }
+
+    async function updateCode (data) {
+      const dataNew = JSON.stringify(data)
+      const response = await fetch("/api/update-code", {
+          method: "POST", 
+          body: dataNew,
+          headers: {
+            'Content-Type': 'application/json',
+        'Accept': 'application/json'
+          }
+      })
+
+      const res = await response.json()
+      // router.push("/")
+  }
     
     async function runRandomUniqueValue(soKyTu, giaTri, type) {
+      const response = await fetch("/api/code", {
+        method: "POST", 
+        headers: {
+          'Content-Type': 'application/json',
+      'Accept': 'application/json'
+        }
+    })
+
+    let rows = await response.json();    
       const result = new Promise( (resolve, reject) => {
         let randomNumber = runRandomValue(soKyTu, giaTri);
-        while ( isIncluded(randomNumber, type) ) {
+        while ( isIncluded(randomNumber, rows, type) ) {
           randomNumber = runRandomValue(soKyTu, giaTri);
         }
         resolve(randomNumber)
       })
       return result;
       }
-  
-      function isIncluded(randomNummber, type) {
-        if (rows.some(item => { return item[type] == randomNummber })) {
-          return true
-        } else {
-          return false
-        }
-      }
-
-      function runRandomValue(soKyTu, giaTri) {
-        var result           = '';
-        var characters       = giaTri;
-        var charactersLength = characters.length;
-        for ( var i = 0; i < soKyTu; i++ ) {
-          result += characters.charAt(Math.floor(Math.random() * 
-     charactersLength));
-       }
-       return result;
-    }
-
 
 }, [isRunRandom, rows]) 
 
@@ -101,4 +105,12 @@ useEffect(() => {
       </main>
 </div>
   )  
+}
+
+export async function getStaticProps(context) {
+  const prevCode = RandomCode();
+  return {
+    props: {
+      prevCode: prevCode }, // will be passed to the page component as props
+  }
 }

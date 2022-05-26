@@ -17,9 +17,11 @@ export default function Ul({ rows }) {
         <th>Số seri</th>
       </tr>
     </thead>
+    <tbody>
     {rows.map((item, index) => {
     return <tr key={index}><td>{item.code}</td><td>{item.seri}</td></tr>
   })}
+  </tbody>
   </table>
     </>
   )
