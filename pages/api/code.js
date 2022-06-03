@@ -7,7 +7,6 @@ export default async (req, res) => {
       const result = await excuteQuery({
           query: 'SELECT * FROM code',
       });
-    //   console.log( "ttt",result );
       res.json(result);
   } catch ( error ) {
       console.log( error );
