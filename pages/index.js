@@ -74,8 +74,6 @@ useEffect(() => {
         }
     })
 
-    console.log(await response.json());
-
     let rows = await response.json();    
       const result = new Promise( (resolve, reject) => {
         let randomNumber = runRandomValue(soKyTu, giaTri);
