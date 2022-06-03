@@ -74,7 +74,7 @@ useEffect(() => {
         }
     })
 
-    console.log(response);
+    console.log(response.json);
 
     let rows = await response.json();    
       const result = new Promise( (resolve, reject) => {
