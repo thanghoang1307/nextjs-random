@@ -9,7 +9,7 @@ import { isIncluded, runRandomValue } from '../lib/random'
 export default function Home({ prevCode }) {
   
   const [rows, setRows] = useState([prevCode]);
-  const [isRunRandom, setIsRunRandom] = useState(true);
+  const [isRunRandom, setIsRunRandom] = useState(false);
   const soLuongCode = 676000;
   const soKyTuCode = 9
   const giaTriCode = 'ABCDEFGHIJKLMNPQRSTUVWXYZ123456789'
@@ -33,6 +33,8 @@ useEffect(() => {
   // if (rows.length > 0) {
   //   setIsRunRandom(isRunRandom => true);
   // }
+
+  setIsRunRandom(isRunRandom => true);
 },[rows])
 
 useEffect(() => {
@@ -45,14 +47,13 @@ useEffect(() => {
     }
     
     async function runRandom() {
-
       // let code = await runRandomUniqueValue(soKyTuCode, giaTriCode, 'code');
       // let seri = await runRandomUniqueValue(soKyTuSeri, giaTriSeri, 'seri');
       // let row = { code, seri };
       let code = runRandomValue(soKyTuCode, giaTriCode)
       let row = { code };
       // setRows(rows => [...rows, row]);
-      // setIsRunRandom(isRunRandom => false);
+      setIsRunRandom(isRunRandom => false);
       updateCode(row);
     }
 
@@ -66,6 +67,8 @@ useEffect(() => {
         'Accept': 'application/json'
           }
       })
+
+      setIsRunRandom(isRunRandom => true);
 
       // const res = await response.json()
       // router.push("/")
@@ -105,7 +108,7 @@ useEffect(() => {
         <h1 className={styles.title}>
           {/* A An Random: <a href="https://nextjs.org">{rows.length}</a> */}
         </h1>
-      {/* <button onClick={handleClick}>Start random</button> */}
+      <button onClick={handleClick}>Start random</button>
       {/* <Table className={styles.ul} rows={rows} onChange={handleChange}>
       </Table> */}
       </main>
