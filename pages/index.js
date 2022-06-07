@@ -42,9 +42,12 @@ useEffect(() => {
     }
     
     async function runRandom() {
-      let code = await runRandomUniqueValue(soKyTuCode, giaTriCode, 'code');
-      let seri = await runRandomUniqueValue(soKyTuSeri, giaTriSeri, 'seri');
-      let row = { code, seri };
+
+      // let code = await runRandomUniqueValue(soKyTuCode, giaTriCode, 'code');
+      // let seri = await runRandomUniqueValue(soKyTuSeri, giaTriSeri, 'seri');
+      // let row = { code, seri };
+      let code = runRandomValue(soKyTuCode, giaTriCode)
+      let row = { code };
       setRows(rows => [...rows, row]);
       setIsRunRandom(isRunRandom => false);
       updateCode(row);
@@ -61,29 +64,29 @@ useEffect(() => {
           }
       })
 
-      const res = await response.json()
+      // const res = await response.json()
       // router.push("/")
   }
     
-    async function runRandomUniqueValue(soKyTu, giaTri, type) {
-      const response = await fetch("/api/code", {
-        method: "POST", 
-        headers: {
-          'Content-Type': 'application/json',
-      'Accept': 'application/json'
-        }
-    })
+    // async function runRandomUniqueValue(soKyTu, giaTri, type) {
+    //   const response = await fetch("/api/code", {
+    //     method: "POST", 
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //   'Accept': 'application/json'
+    //     }
+    // })
 
-    let rows = await response.json();    
-      const result = new Promise( (resolve, reject) => {
-        let randomNumber = runRandomValue(soKyTu, giaTri);
-        while ( isIncluded(randomNumber, rows, type) ) {
-          randomNumber = runRandomValue(soKyTu, giaTri);
-        }
-        resolve(randomNumber)
-      })
-      return result;
-      }
+    // let rows = await response.json();    
+    //   const result = new Promise( (resolve, reject) => {
+    //     let randomNumber = runRandomValue(soKyTu, giaTri);
+    //     while ( isIncluded(randomNumber, rows, type) ) {
+    //       randomNumber = runRandomValue(soKyTu, giaTri);
+    //     }
+    //     resolve(randomNumber)
+    //   })
+    //   return result;
+    //   }
 
 }, [isRunRandom, rows]) 
 
