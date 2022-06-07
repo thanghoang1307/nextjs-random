@@ -9,7 +9,7 @@ import { isIncluded, runRandomValue } from '../lib/random'
 export default function Home({ prevCode }) {
   
   const [rows, setRows] = useState([prevCode]);
-  const [isRunRandom, setIsRunRandom] = useState(false);
+  const [isRunRandom, setIsRunRandom] = useState(true);
   const soLuongCode = 676000;
   const soKyTuCode = 9
   const giaTriCode = 'ABCDEFGHIJKLMNPQRSTUVWXYZ123456789'
@@ -23,21 +23,24 @@ export default function Home({ prevCode }) {
   }
 
   function handleChange() {
-    console.log('Change')
   }
 
   useEffect(() => {
-    setRows(rows => [...prevCode]);
+    // setRows(rows => [...prevCode]);
   }, []);
 
 useEffect(() => {
-  if (rows.length > 0) {
-    setIsRunRandom(isRunRandom => true);
-  }
+  // if (rows.length > 0) {
+  //   setIsRunRandom(isRunRandom => true);
+  // }
 },[rows])
 
 useEffect(() => {
-    if (isRunRandom && rows.length < soLuongCode) {
+    // if (isRunRandom && rows.length < soLuongCode) {
+    //   runRandom();
+    // }
+
+    if (isRunRandom) {
       runRandom();
     }
     
@@ -48,8 +51,8 @@ useEffect(() => {
       // let row = { code, seri };
       let code = runRandomValue(soKyTuCode, giaTriCode)
       let row = { code };
-      setRows(rows => [...rows, row]);
-      setIsRunRandom(isRunRandom => false);
+      // setRows(rows => [...rows, row]);
+      // setIsRunRandom(isRunRandom => false);
       updateCode(row);
     }
 
@@ -100,11 +103,11 @@ useEffect(() => {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          A An Random: <a href="https://nextjs.org">{rows.length}</a>
+          {/* A An Random: <a href="https://nextjs.org">{rows.length}</a> */}
         </h1>
-      <button onClick={handleClick}>Start random</button>
-      <Table className={styles.ul} rows={rows} onChange={handleChange}>
-      </Table>
+      {/* <button onClick={handleClick}>Start random</button> */}
+      {/* <Table className={styles.ul} rows={rows} onChange={handleChange}>
+      </Table> */}
       </main>
 </div>
   )  
